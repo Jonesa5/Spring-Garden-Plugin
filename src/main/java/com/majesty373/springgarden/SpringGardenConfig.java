@@ -1,4 +1,4 @@
-package net.runelite.client.plugins.springgarden;
+package com.majesty373.springgarden;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;

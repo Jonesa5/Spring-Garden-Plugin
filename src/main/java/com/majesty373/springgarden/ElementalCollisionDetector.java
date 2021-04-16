@@ -1,7 +1,8 @@
-package net.runelite.client.plugins.springgarden;
+package com.majesty373.springgarden;
 
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
+
 import javax.inject.Singleton;
 
 @Singleton
@@ -16,10 +17,22 @@ public class ElementalCollisionDetector {
             new WorldPoint(2932, 5466, 0), // 5 NPC 5, 7
     };
 
+    /**
+     * This method returns true if the NPC's ID is within the bounds of Spring Elementals
+     * @param npc The NPC to be tested
+     * @return Boolean on if the NPC is a Spring Elemental or not
+     */
     public static boolean isSpringElemental(NPC npc) {
         return npc.getId() >= 2956 && npc.getId() <= 2963;
     }
 
+    /**
+     * This method takes a sorted NPC array and the index of the tile t obe tested and returns true if the
+     * NPC related to that tile is in the correct position.
+     * @param npcs The sorted incrementing array of Elemental NPCs
+     * @param runTileIndex The index of the tile that is being tested
+     * @return Boolean of if the NPC related to the specific tile index is in the correct position
+     */
     public boolean correctPosition(NPC[] npcs, int runTileIndex) {
         switch (runTileIndex) {
             case 0:
@@ -38,8 +51,8 @@ public class ElementalCollisionDetector {
                 break;
             case 4:
                 if ((npcs[5].getOrientation() == 1536 && npcs[5].getWorldLocation().getX() > 2930) &&
-                    (npcs[7].getOrientation() == 0 && npcs[7].getWorldLocation().getY() > 5472) ||
-                     npcs[7].getOrientation() == 1024) return true;
+                   ((npcs[7].getOrientation() == 0 && npcs[7].getWorldLocation().getY() > 5472) ||
+                     npcs[7].getOrientation() == 1024)) return true;
                 break;
             case 5:
                 if ((npcs[5].getOrientation() == 1536 && npcs[5].getWorldLocation().getX() > 2931) &&

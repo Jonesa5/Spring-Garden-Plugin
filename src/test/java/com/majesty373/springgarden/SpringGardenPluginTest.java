@@ -2,6 +2,7 @@ package com.majesty373.springgarden;
 
 import net.runelite.client.RuneLite;
 import net.runelite.client.externalplugins.ExternalPluginManager;
+import net.runelite.client.plugins.springgarden.SpringGardenPlugin;
 
 public class SpringGardenPluginTest
 {

@@ -1,10 +1,12 @@
-package net.runelite.client.plugins.springgarden;
+package com.majesty373.springgarden;
 
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.Perspective;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.plugins.springgarden.ElementalCollisionDetector;
+import net.runelite.client.plugins.springgarden.SpringGardenConfig;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
@@ -14,8 +16,7 @@ import javax.inject.Singleton;
 import java.awt.*;
 
 @Singleton
-public class SpringGardenOverlay extends Overlay
-{
+public class SpringGardenOverlay extends Overlay {
 
 	private final Client client;
 	private final SpringGardenConfig config;
@@ -30,6 +31,11 @@ public class SpringGardenOverlay extends Overlay
 		setPosition(OverlayPosition.DYNAMIC);
 	}
 
+	/**
+     * This method sorts the inputed NPC array and returns it sorted from lowest ID to largest ID
+	 * @param npcs The array of NPCs to be sorted
+	 * @return NPC array that has been sorted
+	 */
 	public static NPC[] bubbleSort(NPC[] npcs) {
 		int lastPos, index;
 		NPC temp;
@@ -45,16 +51,26 @@ public class SpringGardenOverlay extends Overlay
 		return npcs;
 	}
 
+	/**
+     * This method renders and colors the run tiles and the start tile
+	 * @param graphics Graphics2D from java.awt
+	 * @return Null
+	 */
 	@Override
 	public Dimension render(Graphics2D graphics) {
-		NPC[] npc = bubbleSort(client.getNpcs().stream().filter(ElementalCollisionDetector::isSpringElemental).sequential().toArray(NPC[]::new));
-		for (int i = 0; i < ElementalCollisionDetector.RUNTILES.length; i++) {
-			renderTile(graphics, ElementalCollisionDetector.RUNTILES[i], selectTileColor(collisionDetector.correctPosition(npc, i)));
-		}
 		renderTile(graphics, LAUNCH_POINT, Color.CYAN);
+		NPC[] npc = bubbleSort(client.getNpcs().stream().filter(ElementalCollisionDetector::isSpringElemental).sequential().toArray(NPC[]::new));
+		for (int i = 0; i < ElementalCollisionDetector.RUNTILES.length; i++)
+			renderTile(graphics, ElementalCollisionDetector.RUNTILES[i], (collisionDetector.correctPosition(npc, i) ? config.tilesGood() : config.tilesBad()));
 		return null;
 	}
 
+	/**
+     * This method takes the WorldPoint of a tile and renders a rectangle on it of the given color
+	 * @param graphics Graphics2D from java.awt
+	 * @param wp WorldPoint of where the tile is
+	 * @param color Color to render the tile
+	 */
 	private void renderTile(Graphics2D graphics, WorldPoint wp, Color color) {
 		LocalPoint lp = LocalPoint.fromWorld(client, wp);
 		if (lp != null) {
@@ -62,11 +78,5 @@ public class SpringGardenOverlay extends Overlay
 			if (poly != null)
 				OverlayUtil.renderPolygon(graphics, poly, color);
 		}
-	}
-
-	private Color selectTileColor(boolean onLocation) {
-		if (onLocation)
-			return config.tilesGood();
-		return config.tilesBad();
 	}
 }

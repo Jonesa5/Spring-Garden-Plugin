@@ -1,4 +1,4 @@
-package net.runelite.client.plugins.springgarden;
+package com.majesty373.springgarden;
 
 import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +12,9 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.springgarden.ElementalCollisionDetector;
+import net.runelite.client.plugins.springgarden.SpringGardenConfig;
+import net.runelite.client.plugins.springgarden.SpringGardenOverlay;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 import javax.inject.Inject;
@@ -19,28 +22,34 @@ import java.awt.*;
 
 @Slf4j
 @PluginDescriptor(
-		name = "AAA Spring Garden",
-		description = "Helps with the Spring garden",
-		tags = {"spring", "garden", "thieving", "skilling"}
+		name = "Spring Garden",
+		description = "Helps with the Sorceress's Spring Garden",
+		tags = {"Sorceress", "spring", "garden", "thieving", "skilling"},
+		loadWhenOutdated = true
 )
-public class SpringGardenPlugin extends Plugin
-{
+public class SpringGardenPlugin extends Plugin {
 	@Inject
 	private Client client;
+
 	@Inject
 	private OverlayManager overlayManager;
+
 	@Inject
 	private Notifier notifier;
+
 	@Inject
 	private ElementalCollisionDetector collisionDetector;
+
 	@Inject
 	private SpringGardenOverlay overlay;
+
 	@Inject
 	private SpringGardenConfig config;
 
 	private static final WorldPoint GARDEN = new WorldPoint(2928, 5468, 0);
 	private static final String STAMINA_MESSAGE = "[Spring Garden] Low Stamina Warning";
 	private boolean sentStaminaNotification = false;
+	private static final int MAX_DISTANCE = 10;
 
 	@Override
 	protected void startUp() throws Exception {
@@ -71,14 +80,11 @@ public class SpringGardenPlugin extends Plugin
 		Player p = client.getLocalPlayer();
 		if (p == null)
 			return;
-
-		if (p.getWorldLocation().distanceTo2D(GARDEN) >= 15) {
+		if (p.getWorldLocation().distanceTo2D(GARDEN) >= MAX_DISTANCE) {
 			disableOverlay();
 			return;
 		}
-
 		enableOverlay();
-
 		// check for stamina usage
 		int stamThreshold = config.staminaThreshold();
 		if (stamThreshold != 0) {
