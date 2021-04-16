@@ -24,7 +24,7 @@ dependencies {
 }
 
 group = 'com.majesty373.springgarden'
-version = '1.7.5-SNAPSHOT'
+version = '1.7.5'
 sourceCompatibility = '1.8'
 
 tasks.withType(JavaCompile) {

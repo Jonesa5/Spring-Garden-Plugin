@@ -12,9 +12,9 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.springgarden.ElementalCollisionDetector;
-import net.runelite.client.plugins.springgarden.SpringGardenConfig;
-import net.runelite.client.plugins.springgarden.SpringGardenOverlay;
+import com.majesty373.springgarden.ElementalCollisionDetector;
+import com.majesty373.springgarden.SpringGardenConfig;
+import com.majesty373.springgarden.SpringGardenOverlay;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 import javax.inject.Inject;
@@ -24,8 +24,7 @@ import java.awt.*;
 @PluginDescriptor(
 		name = "Spring Garden",
 		description = "Helps with the Sorceress's Spring Garden",
-		tags = {"Sorceress", "spring", "garden", "thieving", "skilling"},
-		loadWhenOutdated = true
+		tags = {"Sorceress", "spring", "garden", "thieving", "skilling"}
 )
 public class SpringGardenPlugin extends Plugin {
 	@Inject
