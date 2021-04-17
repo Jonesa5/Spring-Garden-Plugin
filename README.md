@@ -31,5 +31,5 @@ Adding the same functionality to the other gardens (Winter, Autumn, and Summer)
 
 Adding a sound effect when it is safe to move to the next tile
 
-Adding an overlay to show how many runs have been made/failed, how many fruits have been collected, 
-    and how much experience you will get from the current amount of drinks in your inventory
+~~Adding an overlay to show how many runs have been made/failed, how many fruits have been collected, 
+    and how much experience you will get from the current amount of drinks in your inventory~~
