@@ -2,7 +2,6 @@ package com.majesty373.springgarden;
 
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
-
 import javax.inject.Singleton;
 
 @Singleton
@@ -34,32 +33,37 @@ public class ElementalCollisionDetector {
      * @return Boolean of if the NPC related to the specific tile index is in the correct position
      */
     public boolean correctPosition(NPC[] npcs, int runTileIndex) {
-        switch (runTileIndex) {
-            case 0:
-                if (npcs[0].getOrientation() == 0 && npcs[0].getWorldLocation().getY() > 5460) return true;
-                break;
-            case 1:
-                if (npcs[0].getOrientation() == 1024 && npcs[0].getWorldLocation().getY() > 5465) return true;
-                break;
-            case 2:
-                if (npcs[1].getWorldLocation().getX() > 2925 &&
-                  ((npcs[2].getWorldLocation().getX() > 2925 && npcs[2].getWorldLocation().getY() > 2925) || npcs[2].getWorldLocation().getX() > 2926) &&
-                   (npcs[6].getOrientation() == 1024 && (npcs[6].getWorldLocation().getY() < 5473 && npcs[6].getWorldLocation().getY() > 5463))) return true;
-                break;
-            case 3:
-                if ((npcs[6].getWorldLocation().getY() < 5467 || npcs[6].getWorldLocation().getY() > 5472) || (npcs[6].getOrientation() == 0 && npcs[6].getWorldLocation().getY() > 5473)) return true;
-                break;
-            case 4:
-                if ((npcs[5].getOrientation() == 1536 && npcs[5].getWorldLocation().getX() > 2930) &&
-                   ((npcs[7].getOrientation() == 0 && npcs[7].getWorldLocation().getY() > 5472) ||
-                     npcs[7].getOrientation() == 1024)) return true;
-                break;
-            case 5:
-                if ((npcs[5].getOrientation() == 1536 && npcs[5].getWorldLocation().getX() > 2931) &&
-                   ((npcs[7].getOrientation() == 0 && npcs[7].getWorldLocation().getY() > 5473) ||
-                     npcs[7].getOrientation() == 1024)) return true;
-                break;
-        }
+        try {
+            switch (runTileIndex) {
+                case 0:
+                    if (npcs[0].getOrientation() == 0 && npcs[0].getWorldLocation().getY() > 5460) return true;
+                    break;
+                case 1:
+                    if (npcs[0].getOrientation() == 1024 && npcs[0].getWorldLocation().getY() > 5465) return true;
+                    break;
+                case 2:
+                    if ((npcs[1].getWorldLocation().getX() > 2925 || npcs[1].getWorldLocation().getY() > 5461) &&
+                       ((npcs[2].getWorldLocation().getX() > 2925 && npcs[2].getWorldLocation().getY() > 2925) || npcs[2].getWorldLocation().getX() > 2926) &&
+                        (npcs[6].getOrientation() == 1024 && (npcs[6].getWorldLocation().getY() < 5472 && npcs[6].getWorldLocation().getY() > 5463)))
+                        return true;
+                    break;
+                case 3:
+                    if ((npcs[6].getWorldLocation().getY() < 5467 || npcs[6].getWorldLocation().getY() > 5472) || (npcs[6].getOrientation() == 0 && npcs[6].getWorldLocation().getY() > 5473))
+                        return true;
+                    break;
+                case 4:
+                    if ((npcs[5].getOrientation() == 1536 && npcs[5].getWorldLocation().getX() > 2930) &&
+                       ((npcs[7].getOrientation() == 0 && npcs[7].getWorldLocation().getY() > 5472) ||
+                         npcs[7].getOrientation() == 1024)) return true;
+                    break;
+                case 5:
+                    if (((npcs[5].getOrientation() == 1536 && npcs[5].getWorldLocation().getX() < 2931) ||
+                          npcs[5].getOrientation() == 2048 && npcs[5].getWorldLocation().getX() < 2930) &&
+                        ((npcs[7].getOrientation() == 0 && npcs[7].getWorldLocation().getY() > 5472) ||
+                          npcs[7].getOrientation() == 1024)) return true;
+                    break;
+            }
+        } catch (Exception e) { return false; }
         return false;
     }
 }

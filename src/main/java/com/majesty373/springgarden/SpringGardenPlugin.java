@@ -1,20 +1,18 @@
 package com.majesty373.springgarden;
 
 import com.google.inject.Provides;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Client;
-import net.runelite.api.Player;
-import net.runelite.api.Varbits;
+import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import com.majesty373.springgarden.ElementalCollisionDetector;
-import com.majesty373.springgarden.SpringGardenConfig;
-import com.majesty373.springgarden.SpringGardenOverlay;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 import javax.inject.Inject;
@@ -24,7 +22,8 @@ import java.awt.*;
 @PluginDescriptor(
 		name = "Spring Garden",
 		description = "Helps with the Sorceress's Spring Garden",
-		tags = {"Sorceress", "spring", "garden", "thieving", "skilling"}
+		tags = {"Sorceress", "spring", "garden", "thieving", "skilling"},
+		loadWhenOutdated = true
 )
 public class SpringGardenPlugin extends Plugin {
 	@Inject
@@ -43,12 +42,22 @@ public class SpringGardenPlugin extends Plugin {
 	private SpringGardenOverlay overlay;
 
 	@Inject
+	private SpringGardenOverlayPanel overlayPanel;
+
+	@Inject
 	private SpringGardenConfig config;
 
+	@Getter(AccessLevel.PACKAGE)
+	private SpringGardenSession session;
+
+	@Getter(AccessLevel.PACKAGE)
+	static long START_TIME;
+
 	private static final WorldPoint GARDEN = new WorldPoint(2928, 5468, 0);
+	private static final int MAX_DISTANCE = 20;
 	private static final String STAMINA_MESSAGE = "[Spring Garden] Low Stamina Warning";
 	private boolean sentStaminaNotification = false;
-	private static final int MAX_DISTANCE = 10;
+
 
 	@Override
 	protected void startUp() throws Exception {
@@ -65,13 +74,39 @@ public class SpringGardenPlugin extends Plugin {
 		if (overlayEnabled)
 			return;
 		overlayEnabled = true;
+		overlayManager.add(overlayPanel);
 		overlayManager.add(overlay);
+		START_TIME = System.currentTimeMillis();
 	}
 
 	private void disableOverlay() {
-		if (overlayEnabled)
+		if (overlayEnabled) {
+			overlayManager.remove(overlayPanel);
 			overlayManager.remove(overlay);
+		}
 		overlayEnabled = false;
+	}
+
+	@Subscribe
+	public void onChatMessage(ChatMessage event) {
+		if (event.getMessage().startsWith("An elemental force emanating from the garden teleports you away")) {
+			if (session == null) {
+				session = new SpringGardenSession();
+			}
+			session.increaseFruitGathered();
+		}
+		else if (event.getMessage().startsWith("You squeeze 4 sq'irks into an empty glass")) {
+			if (session == null) {
+				session = new SpringGardenSession();
+			}
+			session.increaseDrinksMade();
+		}
+		else if (event.getMessage().startsWith("You've been spotted by an elemental and teleported out of its garden")) {
+			if (session == null) {
+				session = new SpringGardenSession();
+			}
+			session.increaseFailedRuns();
+		}
 	}
 
 	@Subscribe
@@ -82,6 +117,8 @@ public class SpringGardenPlugin extends Plugin {
 		if (p.getWorldLocation().distanceTo2D(GARDEN) >= MAX_DISTANCE) {
 			disableOverlay();
 			return;
+		} else if (session == null) {
+			session = new SpringGardenSession();
 		}
 		enableOverlay();
 		// check for stamina usage

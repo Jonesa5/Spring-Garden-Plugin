@@ -1,12 +1,8 @@
 package com.majesty373.springgarden;
 
-import net.runelite.api.Client;
-import net.runelite.api.NPC;
-import net.runelite.api.Perspective;
+import net.runelite.api.*;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
-import com.majesty373.springgarden.ElementalCollisionDetector;
-import com.majesty373.springgarden.SpringGardenConfig;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
@@ -32,7 +28,7 @@ public class SpringGardenOverlay extends Overlay {
 	}
 
 	/**
-     * This method sorts the inputed NPC array and returns it sorted from lowest ID to largest ID
+	 * This method sorts the inputed NPC array and returns it sorted from lowest ID to largest ID
 	 * @param npcs The array of NPCs to be sorted
 	 * @return NPC array that has been sorted
 	 */
@@ -52,7 +48,7 @@ public class SpringGardenOverlay extends Overlay {
 	}
 
 	/**
-     * This method renders and colors the run tiles and the start tile
+	 * This method renders and colors the run tiles and the start tile
 	 * @param graphics Graphics2D from java.awt
 	 * @return Null
 	 */
@@ -66,7 +62,7 @@ public class SpringGardenOverlay extends Overlay {
 	}
 
 	/**
-     * This method takes the WorldPoint of a tile and renders a rectangle on it of the given color
+	 * This method takes the WorldPoint of a tile and renders a rectangle on it of the given color
 	 * @param graphics Graphics2D from java.awt
 	 * @param wp WorldPoint of where the tile is
 	 * @param color Color to render the tile
