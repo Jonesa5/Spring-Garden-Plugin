@@ -24,8 +24,7 @@ import java.awt.*;
 @PluginDescriptor(
 		name = "Spring Garden",
 		description = "Helps with the Sorceress's Spring Garden",
-		tags = {"Sorceress", "spring", "garden", "thieving", "skilling"},
-		loadWhenOutdated = true
+		tags = {"Sorceress", "spring", "garden", "thieving", "skilling"}
 )
 public class SpringGardenPlugin extends Plugin {
 	@Inject
