@@ -2,6 +2,7 @@ package com.majesty373.springgarden;
 
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
+
 import javax.inject.Singleton;
 
 @Singleton
@@ -57,10 +58,9 @@ public class ElementalCollisionDetector {
                          npcs[7].getOrientation() == 1024)) return true;
                     break;
                 case 5:
-                    if (((npcs[5].getOrientation() == 1536 && npcs[5].getWorldLocation().getX() < 2931) ||
-                          npcs[5].getOrientation() == 2048 && npcs[5].getWorldLocation().getX() < 2930) &&
-                        ((npcs[7].getOrientation() == 0 && npcs[7].getWorldLocation().getY() > 5472) ||
-                          npcs[7].getOrientation() == 1024)) return true;
+                    if (((npcs[5].getOrientation() == 1536 && (npcs[5].getWorldLocation().getX() < 2930 || npcs[5].getWorldLocation().getX() > 2932)) ||
+                          npcs[5].getOrientation() == 512 && npcs[5].getWorldLocation().getX() < 2930) &&
+                        ((npcs[7].getOrientation() == 0 && npcs[7].getWorldLocation().getY() > 5472) || npcs[7].getOrientation() == 1024)) return true;
                     break;
             }
         } catch (Exception e) { return false; }
